@@ -1,0 +1,59 @@
+"use client";
+import {
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarTrigger,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import Link from "next/link";
+import TooltipComponent from "@/components/ui/TooltipComponent";
+
+
+
+type TeamSwitcherProps = {
+  name: string;
+  plan: string;
+  logoUrl?: string | null;
+};
+
+export function TeamSwitcher({
+  name,
+  plan,
+}: TeamSwitcherProps) {
+  const { state } = useSidebar();
+  const trimedName = name.length > 10 ? name.slice(0, 10) + "..." : name;
+
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <div className="flex items-center justify-between">
+          <Link href={"/"}>
+            <div className="flex items-center gap-3">
+              <div
+                className="flex aspect-square size-8 sm:size-10 items-center justify-center rounded-lg overflow-hidden p-0.5"
+                style={{
+                  background:
+                    "linear-gradient(to bottom right, #FFFFFF 2%, #FFB13F, #FFCB7F, #d4b012ff)",
+                }}
+              >
+                
+              </div>
+
+              <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                <span className="truncate font-medium">
+                  <TooltipComponent
+                    name={name}
+                    trimedName={trimedName}
+                  />
+                </span>
+                <span className="truncate text-xs">{plan}</span>
+              </div>
+            </div>
+          </Link>
+
+          {state === "expanded" && <SidebarTrigger />}
+        </div>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+}
