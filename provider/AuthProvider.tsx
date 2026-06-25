@@ -11,9 +11,8 @@ import {
 
 export type TCurrentUser = {
   userId: 1;
-  tenantSlug: string;
-  roles: string[];
-  permissions: string[];
+  role: string;
+  permissions?: string[];
   iat: number;
   exp: number;
 };

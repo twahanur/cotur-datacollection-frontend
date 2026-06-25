@@ -4,7 +4,6 @@
 import { config } from "@/config";
 import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-import { getTenantSlug } from "./getSubdomain";
 import { TForgetPasswordData } from "@/components/auth/forgetPassword/ForgetPasswordComponent";
 import { createData, readData } from "../apiService/crud";
 import { TSetNewPass } from "@/components/auth/resetPassword/SetNewPassword";
@@ -18,7 +17,7 @@ type TLogin = {
 export const login = async (loginData: TLogin) => {
   try {
     const res = await fetch(
-      `${config?.next_public_base_api ?? ''}/auth/login`,
+      `${config?.next_public_base_api ?? ""}/auth/login`,
       {
         method: "POST",
         headers: {
@@ -30,7 +29,7 @@ export const login = async (loginData: TLogin) => {
     const result = await res?.json();
     if (result?.success) {
       const cookieStore = await cookies();
-      cookieStore.set("accessToken", result?.data?.token ?? '', {
+      cookieStore.set("accessToken", result?.data?.accessToken ?? "", {
         maxAge: 60 * 60 * 24 * 7, // 7 day
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -48,13 +47,12 @@ export const login = async (loginData: TLogin) => {
     }
     return result;
   } catch (error: any) {
-    return new Error(error?.message ?? 'Login failed');
+    return new Error(error?.message ?? "Login failed");
   }
 };
 
 // get new token functionality
 export const getNewToken = async () => {
-  const tanentslug = await getTenantSlug();
   try {
     const cookieStore = await cookies();
     const token = cookieStore?.get("refreshToken")?.value;
@@ -62,18 +60,17 @@ export const getNewToken = async () => {
       throw new Error("you are not authorized");
     }
     const res = await fetch(
-      `${config?.next_public_base_api ?? ''}/auth/refresh-token`,
+      `${config?.next_public_base_api ?? ""}/auth/refresh`,
       {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
-          "X-Tenant-Slug": tanentslug ?? "",
         },
       },
     );
     return res?.json();
   } catch (error: any) {
-    return new Error(error?.message ?? 'Token refresh failed');
+    return new Error(error?.message ?? "Token refresh failed");
   }
 };
 
@@ -86,7 +83,7 @@ export const getCurrentUser = async () => {
       decodedData = await jwtDecode(accessToken);
       return decodedData;
     } catch (error) {
-      console.error('Token decode error:', error);
+      console.error("Token decode error:", error);
       return null;
     }
   } else {
@@ -103,23 +100,22 @@ export const logout = async () => {
       throw new Error("you are not authorized");
     }
     const res = await fetch(
-      `${config?.next_public_base_api ?? ''}/auth/logout`,
+      `${config?.next_public_base_api ?? ""}/auth/logout`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       },
     );
     const result = await res?.json();
-
     if (result?.success) {
       (await cookies())?.delete("accessToken");
       (await cookies())?.delete("refreshToken");
     }
     return result;
   } catch (error: any) {
-    return new Error(error?.message ?? 'Logout failed');
+    return new Error(error?.message ?? "Logout failed");
   }
 };
 
@@ -152,7 +148,6 @@ export const setNewPassword = async (data: TSetNewPass, token: string) => {
   );
   return res;
 };
-
 
 export type TUpdatePassword = {
   currentPassword: string;

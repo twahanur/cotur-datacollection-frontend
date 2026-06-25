@@ -15,7 +15,7 @@ export const proxy = async (request: NextRequest) => {
 
   if (token && authRoutes.includes(pathname)) {
     const userInfo = await getCurrentUser();
-    const role = userInfo?.roles?.[0] ?? null;
+    const role = userInfo?.role ?? null;
     if (!role) {
       await logout();
       return NextResponse.redirect(new URL("/login", request.url));
@@ -23,6 +23,7 @@ export const proxy = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
+
   // ✅ Logged-out users can access auth routes
   if (!token && authRoutes.includes(pathname)) {
     return NextResponse.next();
@@ -58,7 +59,6 @@ export const proxy = async (request: NextRequest) => {
   }
 
   const userInfo = await getCurrentUser();
-
   if (!userInfo) {
     if (authRoutes.includes(pathname)) return response;
     return NextResponse.redirect(
@@ -66,12 +66,12 @@ export const proxy = async (request: NextRequest) => {
     );
   }
 
-  const role = userInfo?.roles?.[0] ?? null;
+  const role = userInfo?.role ?? null;
   if (!role) {
     return NextResponse.redirect(new URL(`/login`, request.url));
   }
 
-  if (role === "Owner") {
+  if (role === "SUPER_ADMIN") {
     return response;
   }
 

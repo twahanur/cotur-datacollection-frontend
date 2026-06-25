@@ -82,7 +82,6 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
               </SidebarButtonEffect>
             </button>
           </SidebarMenuButton>
-          <SidebarMenuItem key={"logout"} className="w-full"></SidebarMenuItem>
         </SidebarFooter>
       </div>
     </Sidebar>

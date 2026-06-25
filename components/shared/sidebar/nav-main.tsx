@@ -3,20 +3,13 @@ import { SidebarGroup } from "@/components/ui/sidebar";
 import CoreManagement from "./sidebarRoutes/CoreManagement";
 import { useUser } from "@/provider/AuthProvider";
 import { filterRoutesByPermissions } from "@/utills/filterRoutesByPermissions";
-import SidebarSkeleton from "@/components/ui/skeleton/SidebarSkeleton";
-import { crmRoutes, NavRoute } from "@/constants/CRM_Navigation";
+import { navigationROute, NavRoute } from "@/constants/navigationRoute";
 
 export function NavMain() {
   const { user } = useUser();
-  const role = user?.roles[0] as string;
-  const permissions = user?.permissions as string[];
-
-  const permittedRoute = filterRoutesByPermissions({
-    routes: crmRoutes,
-    permissions,
-    role,
-  });
-  const groupedRoutes = crmRoutes.reduce(
+  const role = user?.role as string;
+  const permissions = (user?.permissions as string[]) || [];
+  const groupedRoutes = navigationROute.reduce(
     (acc, route) => {
       const key = route?.group || "Others";
       if (!acc[key]) acc[key] = [];
@@ -28,31 +21,23 @@ export function NavMain() {
 
   return (
     <SidebarGroup>
-      {permittedRoute.length ? (
-        <div className="space-y-3">
-          {Object.entries(groupedRoutes).map(([groupName, routes], i) => {
-            const visibleRoutes = filterRoutesByPermissions({
-              routes,
-              permissions,
-              role,
-            });
+      <div className="space-y-3">
+        {Object.entries(groupedRoutes).map(([groupName, routes], i) => {
+          const visibleRoutes = filterRoutesByPermissions({
+            routes,
+            permissions,
+            role,
+          });
 
-            return (
-              <CoreManagement
-                key={i}
-                sidebarRoutes={visibleRoutes}
-                platform={groupName}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        <div>
-          {Array.from({ length: 4 }).map((_, index) => (
-            <SidebarSkeleton key={index} />
-          ))}
-        </div>
-      )}
+          return (
+            <CoreManagement
+              key={i}
+              sidebarRoutes={visibleRoutes}
+              platform={groupName}
+            />
+          );
+        })}
+      </div>
     </SidebarGroup>
   );
 }

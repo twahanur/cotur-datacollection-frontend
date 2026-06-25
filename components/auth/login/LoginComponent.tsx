@@ -13,6 +13,7 @@ import Link from "next/link";
 import LargeYellowSvg from "@/components/svgIcon/LargeYellowSvg";
 import { useUser } from "@/provider/AuthProvider";
 import { login } from "@/service/authService";
+import { config } from "@/config";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -21,7 +22,7 @@ const loginSchema = z.object({
 
 export type TLoginData = z.infer<typeof loginSchema>;
 
-const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
+const LoginComponent = () => {
   const router = useRouter();
   const { visible, toggle } = usePasswordToggle();
   const [redirect, setRedirect] = useState<string | null>(null);
@@ -54,17 +55,8 @@ const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
         setIsLoading(false);
         await refetchUser();
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push(redirect ? redirect : "/");
         reset();
-        const onboarding =
-          res?.data?.onboarding || res?.data?.onboardingStatus?.data;
-        if (onboarding) {
-          const isCompleted =
-            onboarding?.completed || onboarding?.isOnboardingComplete || false;
-          if (!isCompleted) {
-            return router.push("/onboarding");
-          }
-        }
-        router.push(redirect ? redirect : "/dashboard/profile");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }
@@ -82,17 +74,8 @@ const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
         setIsLoading(false);
         await refetchUser();
         toast.success(res?.message, { id: toastId, duration: 3000 });
+        router.push(redirect ? redirect : "/");
         reset();
-        const onboarding =
-          res?.data?.onboarding || res?.data?.onboardingStatus?.data;
-        if (onboarding) {
-          const isCompleted =
-            onboarding?.completed || onboarding?.isOnboardingComplete || false;
-          if (!isCompleted) {
-            return router.push("/onboarding");
-          }
-        }
-        router.push(redirect ? redirect : "/dashboard/profile");
       } else {
         toast.error(res?.message, { id: toastId, duration: 3000 });
       }
@@ -124,15 +107,15 @@ const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
 
         {/* fast login for development purpose */}
 
-        {tanentslug === "demo" && (
+        {config.next_public_fast_login === "development" && (
           <div className="grid grid-cols-2 gap-2">
             <button
               type="submit"
               disabled={isSubmitting}
               onClick={() =>
                 handleAdmin({
-                  email: "admin@demo.com",
-                  password: "Password@123",
+                  email: "admin@cotur.com",
+                  password: "adminpassword123",
                 })
               }
               className="text-xs font-medium py-2 rounded-full flex items-center justify-center text-[#C3C0D8] border border-[#2C293D] gap-2 cursor-pointer hover:bg-white/5 transition-colors"
@@ -150,33 +133,7 @@ const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
               }
               className="text-xs font-medium py-2 rounded-full flex items-center justify-center text-[#C3C0D8] border border-[#2C293D] gap-2 cursor-pointer hover:bg-white/5 transition-colors"
             >
-              TLeader
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              onClick={() =>
-                handleAdmin({
-                  email: "groupleader@demo.com",
-                  password: "Password@123",
-                })
-              }
-              className="text-xs font-medium py-2 rounded-full flex items-center justify-center text-[#C3C0D8] border border-[#2C293D] gap-2 cursor-pointer hover:bg-white/5 transition-colors"
-            >
-              {isSubmitting ? "..." : " GLeader"}
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              onClick={() =>
-                handleAdmin({
-                  email: "agent@demo.com",
-                  password: "Password@123",
-                })
-              }
-              className="text-xs font-medium py-2 rounded-full flex items-center justify-center text-[#C3C0D8] border border-[#2C293D] gap-2 cursor-pointer hover:bg-white/5 transition-colors"
-            >
-              {isSubmitting ? "..." : " Agent"}
+              Agent
             </button>
           </div>
         )}
@@ -244,19 +201,6 @@ const LoginComponent = ({ tanentslug }: { tanentslug?: string }) => {
             </p>
           </button>
         </form>
-
-        {/* Registration Link */}
-        {!tanentslug && (
-          <p className="flex justify-center gap-1 text-[#9B98AE]">
-            New here ?
-            <Link
-              className="bg-linear-to-b from-[#C3C0D8] to-[#4E0C73] bg-clip-text text-transparent underline underline-offset-2 decoration-[#4E0C73]"
-              href="/register"
-            >
-              Sign Up
-            </Link>
-          </p>
-        )}
       </div>
     </div>
   );

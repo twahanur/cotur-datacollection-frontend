@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import { config } from "@/config";
 import { cookies } from "next/headers";
 import { buildParams } from "@/utills/paramsBuilder";
-import { getTenantSlug } from "../authService/getSubdomain";
 import { Query } from "@/types/shared.types";
 
 //create
@@ -16,14 +15,12 @@ export async function createData<T>(
   data?: T,
 ) {
   const token = await getValidToken();
-  const tanentSlug = (await getTenantSlug()) as string;
   try {
     const res = await fetch(`${config.next_public_base_api}${endPoint}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
-        "X-Tenant-Slug": tanentSlug,
       },
       body: JSON.stringify(data),
     });
@@ -48,14 +45,11 @@ export async function uploadFile<T>(
   data?: T,
 ) {
   const token = await getValidToken();
-  const tanentSlug = (await getTenantSlug()) as string;
   try {
     const res = await fetch(`${config.next_public_base_api}${endPoint}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "X-Tenant-Slug": tanentSlug,
-        // "Content-Type": "multipart/form-data"
       },
       body: data as any,
     });
@@ -81,7 +75,6 @@ export async function readData(
 ) {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
-  const tanentSlug = await getTenantSlug();
   try {
     const res = await fetch(
       `${config.next_public_base_api}${endPoint}?${query ? buildParams(query) : ""}`,
@@ -89,7 +82,6 @@ export async function readData(
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
-          "X-Tenant-Slug": tanentSlug,
         },
         next: {
           tags: [...tags],
@@ -117,13 +109,11 @@ export async function deleteData<T>(
   data?: T,
 ) {
   const token = await getValidToken();
-  const tanentSlug = await getTenantSlug();
   try {
     const res = await fetch(`${config.next_public_base_api}${endPoint}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
-        "X-Tenant-Slug": tanentSlug,
         "Content-Type": "application/json",
       },
       // body: JSON.stringify({customerIds:[1,2]}),
@@ -150,14 +140,12 @@ export async function patchData<T>(
   data?: T,
 ) {
   const token = await getValidToken();
-  const tanentSlug = await getTenantSlug();
   try {
     const res = await fetch(`${config.next_public_base_api}${endPoint}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        "X-Tenant-Slug": tanentSlug,
       },
       body: JSON.stringify(data),
     } as RequestInit);
@@ -181,14 +169,12 @@ export async function putData<T>(
   data?: T,
 ) {
   const token = await getValidToken();
-  const tanentSlug = await getTenantSlug();
   try {
     const res = await fetch(`${config.next_public_base_api}${endPoint}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        "X-Tenant-Slug": tanentSlug,
       },
       body: JSON.stringify(data),
     } as RequestInit);
