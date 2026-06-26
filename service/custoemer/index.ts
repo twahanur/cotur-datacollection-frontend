@@ -8,6 +8,8 @@ import {
   patchData,
   readData,
 } from "../apiService/crud";
+import { getValidToken } from "../authService/validToken";
+import { config } from "@/config";
 import { TCreateCustomerForm } from "@/components/customer/CreateCustomer";
 
 export type TSendOtpData = { phoneNumber: string };
@@ -23,7 +25,7 @@ export async function getAllCustomer(query?: Query) {
 }
 
 export async function getCustomerById(id: string) {
-  const res = await readData(`/customers/${id}`, ["Customer-history"]);
+  const res = await readData(`/customers/${id}`, ["Customers"]);
   return res;
 }
 
@@ -66,10 +68,39 @@ export const updateCustomer = async ({
   return res;
 };
 
-export const deleteCustomer = async (
-  id: string,
-  revalidate = "/customers",
-) => {
+export const deleteCustomer = async (id: string, revalidate = "/customers") => {
   const res = await deleteData(`/customers/${id}`, revalidate);
   return res;
+};
+
+export async function getCustomerHistory(id: string) {
+  const res = await readData(`/customer-histories/${id}`, ["Customers-history"]);
+  return res;
+}
+
+export const exportCustomers = async (
+  format: "csv" | "excel",
+): Promise<{ base64: string; contentType: string; filename: string } | { error: string }> => {
+  const token = await getValidToken();
+  try {
+    const res = await fetch(
+      `${config.next_public_base_api}/export/${format}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!res.ok) {
+      return { error: `Export failed with status ${res.status}` };
+    }
+    const contentType = res.headers.get("content-type") ?? (format === "csv" ? "text/csv" : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    const disposition = res.headers.get("content-disposition") ?? "";
+    const match = disposition.match(/filename[^;=\n]*=([^;\n]*)/);
+    const filename = match ? match[1].replace(/["']/g, "").trim() : `customers.${format === "csv" ? "csv" : "xlsx"}`;
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString("base64");
+    return { base64, contentType, filename };
+  } catch (error: any) {
+    return { error: error?.message ?? "Export failed" };
+  }
 };

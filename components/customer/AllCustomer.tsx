@@ -14,11 +14,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useFilters from "@/hooks/useFilters";
+import { useUser } from "@/provider/AuthProvider";
+import { exportCustomers } from "@/service/custoemer";
 import { TCustomer } from "@/types/customer.types";
 import { TPagination } from "@/types/shared.types";
 import { formatLabel } from "@/utills/formatLabel";
+import { FileSpreadsheet, FileText, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { customerTableColumn } from "./AllCustomerColumn";
 import CreateCustomer from "./CreateCustomer";
 
@@ -29,7 +33,10 @@ type TAllCustomerProps = {
 
 const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
   const [search, setSearch] = useState("");
+  const [exporting, setExporting] = useState<"csv" | "excel" | null>(null);
   const searchParams = useSearchParams();
+  const { user } = useUser();
+  const canExport = user?.role === "SUPER_ADMIN" || user?.role === "ADMIN";
 
   const {
     handleChange,
@@ -39,6 +46,34 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
     setCurrentPage,
     handleReset,
   } = useFilters();
+
+  const handleExport = async (format: "csv" | "excel") => {
+    setExporting(format);
+    try {
+      const result = await exportCustomers(format);
+      if ("error" in result) {
+        toast.error(result.error);
+        return;
+      }
+      const byteChars = atob(result.base64);
+      const byteArr = new Uint8Array(byteChars.length);
+      for (let i = 0; i < byteChars.length; i++) {
+        byteArr[i] = byteChars.charCodeAt(i);
+      }
+      const blob = new Blob([byteArr], { type: result.contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = result.filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success(`Exported as ${format.toUpperCase()} successfully`);
+    } catch {
+      toast.error("Export failed. Please try again.");
+    } finally {
+      setExporting(null);
+    }
+  };
 
   const columns = customerTableColumn();
 
@@ -50,7 +85,37 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
           title="Customers"
           description="Manage and view all collected customer records"
         />
-        <CreateCustomer />
+        <div className="flex items-center gap-2 flex-wrap">
+          {canExport && (
+            <>
+              <button
+                onClick={() => handleExport("csv")}
+                disabled={exporting !== null}
+                className="relative cursor-pointer bg-white/5 rounded-2xl py-1.5 sm:py-2 flex items-center justify-center px-3 sm:px-4 overflow-hidden whitespace-nowrap border border-white/10 gap-2 text-sm text-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {exporting === "csv" ? (
+                  <Loader2 size={15} className="animate-spin" />
+                ) : (
+                  <FileText size={15} className="text-emerald-400" />
+                )}
+                Export CSV
+              </button>
+              <button
+                onClick={() => handleExport("excel")}
+                disabled={exporting !== null}
+                className="relative cursor-pointer bg-white/5 rounded-2xl py-1.5 sm:py-2 flex items-center justify-center px-3 sm:px-4 overflow-hidden whitespace-nowrap border border-white/10 gap-2 text-sm text-white hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {exporting === "excel" ? (
+                  <Loader2 size={15} className="animate-spin" />
+                ) : (
+                  <FileSpreadsheet size={15} className="text-blue-400" />
+                )}
+                Export Excel
+              </button>
+            </>
+          )}
+          <CreateCustomer />
+        </div>
       </div>
 
       <Card className="w-full rounded-2xl effect p-2 gap-3">

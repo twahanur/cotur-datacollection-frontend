@@ -1,11 +1,8 @@
-import React from 'react';
+import React from "react";
+import AllUserLoadingPage from "../users/loading";
 
 const CustomerListLoadingPage = () => {
-    return (
-        <div className='min-h-screen space-y-4'>
-            this is customer list loading
-        </div>
-    );
+  return <AllUserLoadingPage />;
 };
 
 export default CustomerListLoadingPage;

@@ -40,9 +40,10 @@ export type TUpdateCustomerForm = z.infer<typeof baseSchema>;
 type TCreateCustomerProps = {
   customer?: TCustomer;
   path?: string;
+  isFrom?: boolean;
 };
 
-const CreateCustomer = ({ customer, path }: TCreateCustomerProps) => {
+const CreateCustomer = ({ customer, path, isFrom = false }: TCreateCustomerProps) => {
   const [open, setOpen] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpSending, setOtpSending] = useState(false);
@@ -133,9 +134,13 @@ const CreateCustomer = ({ customer, path }: TCreateCustomerProps) => {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogTrigger asChild>
         {customer ? (
-          <button className="text-text-secondary cursor-pointer hover:text-white transition-colors">
-            <SquarePen size={16} />
-          </button>
+          isFrom ? (
+            <TriggeredButton name="Update" varient="green" icon={SquarePen} />
+          ) : (
+            <button className="text-text-secondary cursor-pointer hover:text-white transition-colors">
+              <SquarePen size={16} />
+            </button>
+          )
         ) : (
           <TriggeredButton
             name="Create Customer"
