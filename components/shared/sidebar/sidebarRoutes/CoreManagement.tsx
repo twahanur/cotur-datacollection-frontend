@@ -20,8 +20,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import SidebarButtonEffect from "../buttons/ItemButton";
-import { NavRoute } from "@/constants/CRM_Navigation";
 import SubItemButton from "../buttons/SubItemButton";
+import { NavRoute } from "@/constants/navigationRoute";
 
 type TCoreManagementRoute = {
   sidebarRoutes: NavRoute[];
@@ -54,11 +54,11 @@ const CoreManagement = ({
       <SidebarMenu className="gap-0">
         {sidebarRoutes.map((item, i) => {
           const isActive = item?.path ? matchRoute(pathname, item.path) : false;
-
+    
           const isChildActive = item.children?.some((child) =>
             child.path ? matchRoute(pathname, child.path) : false,
           );
-
+      console.log(isActive);
           if (!item.children || item.children.length === 0) {
             return (
               <SidebarMenuItem key={i} className="w-full">

@@ -12,7 +12,7 @@ export type ChangeInput =
 
 export type TPagination = {
   page: number;
-  pageSize: number;
-  totalItems: number;
+  limit: number;
+  total: number;
   totalPages: number;
 };

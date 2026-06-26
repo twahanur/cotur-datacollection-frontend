@@ -1,5 +1,5 @@
-import { crmRoutes, NavRoute } from "@/constants/CRM_Navigation";
-import { useUser } from "@/provider/AuthProvider";
+
+import { navigationROute, NavRoute } from "@/constants/navigationRoute";
 
 export type PermissionRoute = {
   path: string;
@@ -49,5 +49,5 @@ export const extractPermissionRoutes = (
 };
 
 export const permissionBasedRoutes = [
-  ...extractPermissionRoutes(crmRoutes),
+  ...extractPermissionRoutes(navigationROute),
 ].sort((a, b) => b.pattern.source.length - a.pattern.source.length);

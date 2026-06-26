@@ -1,4 +1,4 @@
-import { Contact, House, LucideIcon, UserRoundCheck, Users, UsersRound } from "lucide-react";
+import { House, LucideIcon, UserRoundCheck, Users, UsersRound } from "lucide-react";
 
 export interface NavRoute {
   title: string;

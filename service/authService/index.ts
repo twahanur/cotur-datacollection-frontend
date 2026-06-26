@@ -59,16 +59,18 @@ export const getNewToken = async () => {
     if (!token) {
       throw new Error("you are not authorized");
     }
+
     const res = await fetch(
       `${config?.next_public_base_api ?? ""}/auth/refresh`,
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       },
     );
-    return res?.json();
+    const result = await res?.json()
+    return result;
   } catch (error: any) {
     return new Error(error?.message ?? "Token refresh failed");
   }

@@ -1,4 +1,5 @@
-import { NavRoute } from "@/constants/CRM_Navigation";
+import { NavRoute } from "@/constants/navigationRoute";
+
 type TFilterRoutesByPermission = {
   routes: NavRoute[];
   permissions: string[];

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { SidebarMenuSubButton, useSidebar } from "@/components/ui/sidebar";
-import { NavRoute } from "@/constants/CRM_Navigation";
 import SidebarButtonSvg from "@/components/svgIcon/SidebarButtonSvg";
+import { NavRoute } from "@/constants/navigationRoute";
 
 export type SubItemButtonProps = {
   isActive: boolean;
