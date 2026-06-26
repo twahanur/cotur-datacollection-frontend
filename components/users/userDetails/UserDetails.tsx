@@ -1,3 +1,4 @@
+"use client";
 import PageHeader from "@/components/shared/PageHeader";
 import { Card } from "@/components/ui/card";
 import { TUser } from "@/types/user.types";
@@ -13,6 +14,9 @@ import {
   User,
 } from "lucide-react";
 import CreateUser from "../CreateUser";
+import ResetPassword from "./ResetPassword";
+import { InfoRow } from "./InRow";
+import { useUser } from "@/provider/AuthProvider";
 
 const statusStyles: Record<string, string> = {
   ACTIVE: "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20",
@@ -25,31 +29,13 @@ const roleStyles: Record<string, string> = {
   AGENT: "bg-blue-500/10 text-blue-400 border border-blue-500/20",
 };
 
-const InfoRow = ({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-}) => (
-  <div className="flex items-start gap-3 py-3 border-b border-white/5 last:border-0">
-    <div className="mt-0.5 p-2 rounded-lg bg-white/5 shrink-0">
-      <Icon size={14} className="text-[#A1A1A1]" />
-    </div>
-    <div className="min-w-0">
-      <p className="text-[#A1A1A1] text-xs mb-0.5">{label}</p>
-      <p className="text-white text-sm font-medium break-all">{value}</p>
-    </div>
-  </div>
-);
-
 const UserDetails = ({ user }: { user: TUser }) => {
   const { creationDate, creationTime } = convertDate(new Date(user.createdAt));
   const { creationDate: updatedDate, creationTime: updatedTime } = convertDate(
     new Date(user.updatedAt),
   );
+
+  const { user: userData } = useUser();
 
   const initials = user.fullName
     .split(" ")
@@ -66,7 +52,12 @@ const UserDetails = ({ user }: { user: TUser }) => {
           title="User Details"
           description="View and manage user account information"
         />
-        <CreateUser user={user} />
+        {(userData?.role == "SUPER_ADMIN" || userData?.role == "ADMIN") && (
+          <div className="flex items-center gap-2 flex-wrap">
+            <ResetPassword userId={user.id} />
+            <CreateUser user={user} isFrom={true} path={`/users/${user?.id}`} />
+          </div>
+        )}
       </div>
 
       {/* Profile card */}
@@ -131,11 +122,7 @@ const UserDetails = ({ user }: { user: TUser }) => {
             <h3 className="text-white text-sm font-semibold">Contact Info</h3>
           </div>
           <InfoRow icon={Mail} label="Email Address" value={user.email} />
-          <InfoRow
-            icon={Phone}
-            label="Phone Number"
-            value={user.phoneNumber}
-          />
+          <InfoRow icon={Phone} label="Phone Number" value={user.phoneNumber} />
           <InfoRow icon={User} label="Full Name" value={user.fullName} />
         </Card>
 

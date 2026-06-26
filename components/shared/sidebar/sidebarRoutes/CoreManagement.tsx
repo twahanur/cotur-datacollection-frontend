@@ -58,7 +58,6 @@ const CoreManagement = ({
           const isChildActive = item.children?.some((child) =>
             child.path ? matchRoute(pathname, child.path) : false,
           );
-      console.log(isActive);
           if (!item.children || item.children.length === 0) {
             return (
               <SidebarMenuItem key={i} className="w-full">

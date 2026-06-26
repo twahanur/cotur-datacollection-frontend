@@ -8,6 +8,7 @@ import {
   readData,
 } from "../apiService/crud";
 import { TUserForm } from "@/components/users/CreateUser";
+import { TResetForm } from "@/components/users/userDetails/ResetPassword";
 
 type TUpdateProfileProps = {
   id: string;
@@ -48,6 +49,16 @@ export const deleteUser = async (id: string) => {
   const res = await deleteData(
     `/users/${id}`,
     "/dashboard/settings/user-management",
+  );
+  return res;
+};
+
+
+export const resetUserPassword = async (data: TResetForm, id: string) => {
+  const res = await createData<TResetForm>(
+    `/users/${id}/reset-password`,
+    `/users/${id}`,
+    data,
   );
   return res;
 };

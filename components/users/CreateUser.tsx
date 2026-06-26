@@ -69,9 +69,11 @@ export type TUserForm = TUpdateUserForm & { password?: string };
 
 type TCreateUserProps = {
   user?: TUser;
+  isFrom?: boolean;
+  path?: string;
 };
 
-const CreateUser = ({ user }: TCreateUserProps) => {
+const CreateUser = ({ user, isFrom = false, path }: TCreateUserProps) => {
   const formSchema = getFormSchema(!!user);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -109,7 +111,11 @@ const CreateUser = ({ user }: TCreateUserProps) => {
     try {
       let result;
       if (user) {
-        result = await updateUser({ id: user.id, data });
+        result = await updateUser({
+          id: user.id,
+          data,
+          path: path ? path : "/users",
+        });
       } else {
         result = await createUser(data);
       }
@@ -136,9 +142,13 @@ const CreateUser = ({ user }: TCreateUserProps) => {
     >
       <DialogTrigger asChild>
         {user ? (
-          <button className="text-text-secondary cursor-pointer">
-            <SquarePen size={16} />
-          </button>
+          isFrom ? (
+            <TriggeredButton name="Update" varient="green" icon={SquarePen} />
+          ) : (
+            <button className="text-text-secondary cursor-pointer">
+              <SquarePen size={16} />
+            </button>
+          )
         ) : (
           <TriggeredButton
             name="Create User"
@@ -148,7 +158,7 @@ const CreateUser = ({ user }: TCreateUserProps) => {
         )}
       </DialogTrigger>
 
-      <DialogContent className="px-6 py-4 w-[40vw] max-w-150 gap-2 bg-[#1A1129] border-white/10 max-h-screen overflow-y-auto hide-scrollbar">
+      <DialogContent className="px-6 py-4 w-[40vw] max-w-150 gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <DialogHeader className="flex flex-row items-center justify-between mt-4">
             <DialogTitle className="text-xl font-semibold text-white">

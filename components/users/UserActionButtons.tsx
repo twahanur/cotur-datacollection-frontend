@@ -51,7 +51,7 @@ const UserActionButtons = ({ user }: TUserActionButtonProps) => {
       </Link>
       <CreateUser user={user} />
 
-      <ConfirmComponent
+      {/* <ConfirmComponent
         onChange={handleDeleteUser}
         id={user?.id.toString()}
         title="Want to Delete this user?"
@@ -60,7 +60,7 @@ const UserActionButtons = ({ user }: TUserActionButtonProps) => {
         <button className="text-red-600 cursor-pointer">
           <Trash2 size={16} />
         </button>
-      </ConfirmComponent>
+      </ConfirmComponent> */}
     </div>
   );
 };

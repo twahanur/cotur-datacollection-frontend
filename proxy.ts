@@ -8,6 +8,7 @@ export const proxy = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
   const response = NextResponse.next();
   const token = request.cookies.get("accessToken")?.value;
+
   const refreshToken = request.cookies.get("refreshToken")?.value;
   if (!refreshToken) {
     response.cookies.delete("accessToken");
@@ -32,7 +33,7 @@ export const proxy = async (request: NextRequest) => {
   if (!token || (await isTokenExpired(token))) {
     try {
       const data = await getNewToken();
-      const accessToken = data?.data?.token as string;
+      const accessToken = data?.data?.accessToken as string;
       if (data?.success && accessToken) {
         response.cookies.set("accessToken", accessToken as string, {
           maxAge: 60 * 60 * 24 * 7,
@@ -79,5 +80,5 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/", "/login"],
+  matcher: ["/", "/login", "/users/:path*", "/customers/:path*"],
 };
