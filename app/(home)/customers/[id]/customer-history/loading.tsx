@@ -1,11 +1,7 @@
-import React from 'react';
+import AllUserLoadingPage from "@/app/(home)/users/loading";
 
 const CustomerHistoryLoadingPage = () => {
-    return (
-        <div className='min-h-screen space-y-4'>
-            this is customer history laoding 
-        </div>
-    );
+  return <AllUserLoadingPage />;
 };
 
 export default CustomerHistoryLoadingPage;
