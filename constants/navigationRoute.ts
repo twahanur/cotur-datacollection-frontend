@@ -1,4 +1,5 @@
 import {
+  Activity,
   House,
   LucideIcon,
   UserRoundCheck,
@@ -27,11 +28,11 @@ export const navigationROute: NavRoute[] = [
     icon: Users,
     path: "/users",
   },
-  // {
-  //   title: "Agents",
-  //   icon: UsersRound,
-  //   path: "/agents",
-  // },
+  {
+    title: "Agents",
+    icon: UsersRound,
+    path: "/agents",
+  },
   {
     title: "Customers",
     icon: UserRoundCheck,
@@ -39,7 +40,7 @@ export const navigationROute: NavRoute[] = [
   },
   {
     title: "Activity Log",
-    icon: UserRoundCheck,
+    icon: Activity,
     path: "/activity-log",
   },
 ];

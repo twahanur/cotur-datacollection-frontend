@@ -1,9 +1,7 @@
+import AllUserLoadingPage from "../users/loading";
+
 const ActivityLogLoadingPage = () => {
-  return (
-    <div className="min-h-screen space-y-4">
-      this is activity log loading page
-    </div>
-  );
+  return <AllUserLoadingPage/>;
 };
 
 export default ActivityLogLoadingPage;
