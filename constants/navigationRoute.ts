@@ -2,6 +2,7 @@ import {
   Activity,
   House,
   LucideIcon,
+  Target,
   UserRoundCheck,
   Users,
   UsersRound,
@@ -37,6 +38,11 @@ export const navigationROute: NavRoute[] = [
     title: "Customers",
     icon: UserRoundCheck,
     path: "/customers",
+  },
+  {
+    title: "Targets",
+    icon: Target,
+    path: "/targets",
   },
   {
     title: "Activity Log",

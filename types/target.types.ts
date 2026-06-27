@@ -8,3 +8,21 @@ export type TAgentStatTarget = {
   remainingCount: number;
   targetCount: number;
 };
+
+export type TTargetOfAAgent = {
+  id: string;
+  fullName: string;
+  email: string;
+};
+
+export type TTarget = {
+  id: string;
+  agent?: TTargetOfAAgent;
+  agentId?: string;
+  period: TTargetPeriod;
+  specificDate?: string;
+  targetCount: number;
+  type: TTargetType;
+  createdAt: string;
+  updatedAt: string;
+};
