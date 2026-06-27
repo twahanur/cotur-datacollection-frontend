@@ -27,14 +27,19 @@ export const navigationROute: NavRoute[] = [
     icon: Users,
     path: "/users",
   },
-  {
-    title: "Agents",
-    icon: UsersRound,
-    path: "/agents",
-  },
+  // {
+  //   title: "Agents",
+  //   icon: UsersRound,
+  //   path: "/agents",
+  // },
   {
     title: "Customers",
     icon: UserRoundCheck,
     path: "/customers",
+  },
+  {
+    title: "Activity Log",
+    icon: UserRoundCheck,
+    path: "/activity-log",
   },
 ];

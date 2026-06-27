@@ -16,7 +16,7 @@ const Home = async () => {
     result = agentStatsResult?.data;
   }
 
-  console.log(result);
+
   return (
     <section className="min-h-screen">
       <DashboardStats stats={result}/>

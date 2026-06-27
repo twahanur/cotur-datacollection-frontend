@@ -29,6 +29,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { StatCard } from "./StatCard";
+import { SectionHeader } from "./SectionHeader";
 
 // ─── palette ────────────────────────────────────────────────────────────────
 const COLORS = [
@@ -41,46 +43,6 @@ const COLORS = [
   "#A78BFA",
   "#2DD4BF",
 ];
-
-// ─── small helpers ───────────────────────────────────────────────────────────
-const StatCard = ({
-  icon: Icon,
-  label,
-  value,
-  iconBg,
-  iconColor,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: number | string;
-  iconBg: string;
-  iconColor: string;
-}) => (
-  <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0 flex flex-row items-center">
-    <div className={`p-3 rounded-2xl shrink-0 ${iconBg}`}>
-      <Icon size={20} className={iconColor} />
-    </div>
-    <div className="min-w-0">
-      <p className="text-[#A1A1A1] text-xs leading-none mb-1">{label}</p>
-      <p className="text-white text-2xl font-bold truncate">{value}</p>
-    </div>
-  </Card>
-);
-
-const SectionHeader = ({
-  icon: Icon,
-  title,
-}: {
-  icon: React.ElementType;
-  title: string;
-}) => (
-  <div className="flex items-center gap-2 mb-3">
-    <div className="p-2 rounded-xl bg-[rgba(255,107,0,0.13)] shrink-0">
-      <Icon size={15} className="text-[#FF6B00]" />
-    </div>
-    <h3 className="text-white text-sm font-semibold">{title}</h3>
-  </div>
-);
 
 // ─── main component ──────────────────────────────────────────────────────────
 const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
