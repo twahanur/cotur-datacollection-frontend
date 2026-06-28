@@ -51,7 +51,7 @@ export function TeamSwitcher({
             </div>
           </Link>
 
-          {state === "expanded" && <SidebarTrigger />}
+          <SidebarTrigger />
         </div>
       </SidebarMenuItem>
     </SidebarMenu>

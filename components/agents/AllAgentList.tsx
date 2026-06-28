@@ -45,7 +45,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
   return (
     <div className="space-y-4">
       {/* header */}
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader
           title="All agent list"
           description="Manage all agent and their details"
@@ -54,11 +54,11 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
       </div>
 
       <Card className=" w-full rounded-2xl effect p-2 gap-3">
-        {/* header */}
-        <div className="flex items-center justify-between">
+        {/* card header */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
             <div
-              className={`p-3 rounded-2xl relative bg-[rgba(255,107,0,0.13)] effect-no-bg`}
+              className={`p-3 rounded-2xl relative bg-[rgba(255,107,0,0.13)] effect-no-bg shrink-0`}
             >
               <Users className="text-[#FF6B00]" />
             </div>
@@ -69,12 +69,11 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
               </p>
             </div>
           </div>
-
           <ConfigureTarget agents={agents} />
         </div>
 
-        <div className=" flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
             <Input
               value={search}
               onChange={(e) => {
@@ -82,7 +81,8 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
                 setSearch(value);
                 handleChange("search", value);
               }}
-              placeholder="Search by name "
+              placeholder="Search by name"
+              className="w-full sm:w-44"
             />
 
             {/* Status Filter */}
@@ -90,7 +90,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
               value={searchParams.get("status") || "all"}
               onValueChange={(value) => handleChange("status", value)}
             >
-              <SelectTrigger className="cursor-pointer">
+              <SelectTrigger className="cursor-pointer w-full sm:w-40">
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
@@ -114,6 +114,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
               handleReset({ setLimit: setShow, setCurrPage: setCurrentPage })
             }
             varient="default"
+            className="w-full sm:w-auto"
           />
         </div>
 

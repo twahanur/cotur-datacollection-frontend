@@ -46,7 +46,7 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
   return (
     <div className="space-y-4">
       {/* header */}
-      <div className="flex items-center justify-between ">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <PageHeader
           title="Users & Roles"
           description="Manage user accounts and role permissions"
@@ -68,8 +68,8 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
           </div>
         </div>
 
-        <div className=" flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
             <Input
               value={search}
               onChange={(e) => {
@@ -77,14 +77,15 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
                 setSearch(value);
                 handleChange("search", value);
               }}
-              placeholder="Search by name "
+              placeholder="Search by name"
+              className="w-full sm:w-44"
             />
 
             <Select
               value={searchParams.get("role") || "all"}
               onValueChange={(value) => handleChange("role", value)}
             >
-              <SelectTrigger className="cursor-pointer">
+              <SelectTrigger className="cursor-pointer w-full sm:w-40">
                 <SelectValue placeholder="Filter by Role" />
               </SelectTrigger>
               <SelectContent>
@@ -106,14 +107,12 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
               value={searchParams.get("status") || "all"}
               onValueChange={(value) => handleChange("status", value)}
             >
-              <SelectTrigger className="cursor-pointer">
+              <SelectTrigger className="cursor-pointer w-full sm:w-40">
                 <SelectValue placeholder="Filter by Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                {[
-                  "ACTIVE" , "DISABLED"
-                ].map((status) => (
+                {["ACTIVE", "DISABLED"].map((status) => (
                   <SelectItem
                     key={status}
                     value={status}
@@ -132,6 +131,7 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
               handleReset({ setLimit: setShow, setCurrPage: setCurrentPage })
             }
             varient="default"
+            className="w-full sm:w-auto"
           />
         </div>
 

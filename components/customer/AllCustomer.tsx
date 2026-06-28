@@ -153,14 +153,14 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
                 ))}
               </SelectContent>
             </Select>
-
-            {/* Collected by (agent name search) */}
-            <Input
-              defaultValue={searchParams.get("collectedBy") || ""}
-              onChange={(e) => handleChange("collectedBy", e.target.value)}
-              placeholder="Filter by agent"
-              className="w-full sm:w-44"
-            />
+            {canExport && (
+              <Input
+                defaultValue={searchParams.get("collectedBy") || ""}
+                onChange={(e) => handleChange("collectedBy", e.target.value)}
+                placeholder="Filter by agent"
+                className="w-full sm:w-44"
+              />
+            )}
           </div>
 
           <ButtonComponent

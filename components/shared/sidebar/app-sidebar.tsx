@@ -9,7 +9,6 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { CustomScrollbar } from "@/components/ui/CustomScrollbar";
 import SidebarButtonEffect from "./buttons/ItemButton";

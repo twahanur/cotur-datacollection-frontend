@@ -1,6 +1,6 @@
 
 import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Provider from "@/provider/Provider";
 import { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -37,7 +37,12 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
           <SidebarProvider className="px-1 gap-1" defaultOpen={true}>
             <AppSidebar />
             <SidebarInset className="max-w-[1200px] w-full min-w-0 mx-auto space-y-0">
-              <div className="w-full mx-auto md:px-1 md:py-4 px-2 py-6 overflow-x-hidden relative z-20">
+              {/* mobile top bar — only visible on mobile */}
+              <div className="sticky top-0 z-30 flex items-center gap-3 px-3 py-3 md:hidden bg-[hsl(278_72%_13%/80%)] backdrop-blur border-b border-white/10">
+                <SidebarTrigger />
+                <span className="text-white text-sm font-semibold truncate">Cotur</span>
+              </div>
+              <div className="w-full mx-auto md:px-1 md:py-4 px-2 py-4 overflow-x-hidden relative z-20">
                 {children}
               </div>
             </SidebarInset>
