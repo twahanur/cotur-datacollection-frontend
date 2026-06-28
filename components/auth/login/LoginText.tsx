@@ -1,24 +1,24 @@
-import Image from "next/image";
+
 import { Check } from "lucide-react";
 
 const LoginText = () => {
   const texts = [
-    "Personalized recommendations and actionable insights",
-    "Enhance sales performance and team productivity",
-    "Engineered from your leads, orders, and customer data",
+    "Manage the users to perform the action",
+    "Manage the customer data confidently",
+    "Assigned target for individual agent to add customer",
   ];
   return (
     <div className="space-y-8 px-4 hidden lg:block">
       <div className="flex items-center gap-2">
-        <h1 className="text-2xl font-semibold">Optilux</h1>
+        <h1 className="text-2xl font-semibold">Chotur</h1>
       </div>
       <div className="space-y-4">
         <h1 className="font-poppins text-2xl md:text-[32px] font-medium leading-tight md:leading-[42px] bg-linear-to-b from-[#C3C0D8] to-[#4E0C73] bg-clip-text text-transparent">
-          Unlock Smarter Business Operations <br /> with OptiluxBD CRM
+          Manage the customer data <br /> with Chotur data management
         </h1>
         <p className="font-poppins text-sm md:text-[16px] font-normal leading-relaxed text-[#9B98AE] self-stretch max-w-lg">
-          Discover the power of smart CRM with data-driven insights, 
-          crafted from your leads, orders, and team activities.
+          With the otp system now you can add real customer from your business,
+          Manage the data with just some click and verification.
         </p>
       </div>
 
@@ -31,19 +31,6 @@ const LoginText = () => {
             <span className="text-[#EEEBFF] text-sm md:text-base">{text}</span>
           </p>
         ))}
-      </div>
-
-      <div className="space-y-4">
-        <h2 className="text-sm md:text-base leading-6 text-[#9B98AE]">
-          Trusted by Growing Teams
-        </h2>
-        <Image
-          src="https://res.cloudinary.com/dbb6nen3p/image/upload/v1766492541/suggestions_x7mozp.png"
-          height={50}
-          width={500}
-          alt="suggestion"
-          className="w-full max-w-[400px] h-auto opacity-80"
-        />
       </div>
     </div>
   );

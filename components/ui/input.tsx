@@ -13,7 +13,7 @@ export function Input({
   sku?: string;
 }) {
   return (
-    <div className="relative w-full">
+    <div className="relative">
       {icon && (
         <span className="absolute top-2 left-2 text-white/60 w-4 h-4">
           {icon}
@@ -23,7 +23,7 @@ export function Input({
         type={type}
         data-slot="input"
         className={cn(
-          "text-[#9a9aa6] placeholder-[#8a8a96] text-base font-light outline-none effect flex items-center gap-3 px-4 py-2   bg-white/10 backdrop-blur-3xl rounded-[12px] focus-within:border-white/30 focus-within:shadow-md transition-[box-shadow,border-color] w-full",
+          "text-[#9a9aa6] placeholder-[#8a8a96] text-base font-light outline-none effect flex items-center gap-3 px-4 py-2 bg-white/10 backdrop-blur-3xl rounded-[12px] focus-within:border-white/30 focus-within:shadow-md transition-[box-shadow,border-color]",
           className,
         )}
         {...props}

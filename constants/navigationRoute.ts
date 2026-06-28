@@ -47,7 +47,7 @@ export const navigationROute: NavRoute[] = [
     title: "Targets",
     icon: Target,
     path: "/targets",
-    roles: ["SUPER_ADMIN", "ADMIN", "AGENT"],
+    roles: ["SUPER_ADMIN", "ADMIN"],
   },
   {
     title: "Activity Log",

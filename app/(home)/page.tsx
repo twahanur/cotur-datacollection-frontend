@@ -5,7 +5,6 @@ import {
   getAdminDashboardStats,
   getAgentDashboardStats,
 } from "@/service/dashboard";
-import { notFound } from "next/navigation";
 
 const Home = async () => {
   const currentUser = await getCurrentUser();
@@ -17,9 +16,9 @@ const Home = async () => {
     const agentStatsResult = await getAgentDashboardStats();
     result = agentStatsResult?.data;
   }
-  if (!result) {
-    return notFound();
-  }
+  // if (!result) {
+  //   return notFound();
+  // }
   return (
     <section className="min-h-screen">
       {currentUser?.role === "SUPER_ADMIN" || currentUser?.role === "ADMIN" ? (

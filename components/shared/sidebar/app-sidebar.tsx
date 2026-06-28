@@ -50,7 +50,7 @@ export function AppSidebar({ ...props }: AppSidebarProps) {
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col flex-1 min-h-0 space-y-6">
           <SidebarHeader>
-            <TeamSwitcher name={"Chotur"} plan="Customer" />
+            <TeamSwitcher name={"Chotur"} plan="Customer Data" />
             <div className="border border-dashed border-[rgba(255,177,63,0.50)]" />
           </SidebarHeader>
 
