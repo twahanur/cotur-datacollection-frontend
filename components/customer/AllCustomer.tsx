@@ -49,9 +49,19 @@ const AllCustomer = ({ customers, meta, agents }: TAllCustomerProps) => {
   } = useFilters();
 
   const handleExport = async (format: "csv" | "excel") => {
+    // collect all active filters from the current URL search params
+    // exclude pagination-only params that don't affect the data set
+    const skipKeys = new Set(["page", "limit"]);
+    const activeFilters: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      if (!skipKeys.has(key) && value) {
+        activeFilters[key] = value;
+      }
+    });
+
     setExporting(format);
     try {
-      const result = await exportCustomers(format);
+      const result = await exportCustomers(format, activeFilters);
       if ("error" in result) {
         toast.error(result.error);
         return;

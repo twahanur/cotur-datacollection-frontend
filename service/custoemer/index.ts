@@ -80,11 +80,19 @@ export async function getCustomerHistory(id: string) {
 
 export const exportCustomers = async (
   format: "csv" | "excel",
+  query?: Record<string, string>,
 ): Promise<{ base64: string; contentType: string; filename: string } | { error: string }> => {
   const token = await getValidToken();
   try {
+    const params = new URLSearchParams();
+    if (query) {
+      Object.entries(query).forEach(([k, v]) => {
+        if (v) params.set(k, v);
+      });
+    }
+    const qs = params.toString() ? `?${params.toString()}` : "";
     const res = await fetch(
-      `${config.next_public_base_api}/export/${format}`,
+      `${config.next_public_base_api}/export/${format}${qs}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
