@@ -34,7 +34,6 @@ type TAllCustomerProps = {
 };
 
 const AllCustomer = ({ customers, meta, agents }: TAllCustomerProps) => {
-  const [search, setSearch] = useState("");
   const [exporting, setExporting] = useState<"csv" | "excel" | null>(null);
   const searchParams = useSearchParams();
   const { user } = useUser();
