@@ -43,7 +43,11 @@ type TCreateCustomerProps = {
   isFrom?: boolean;
 };
 
-const CreateCustomer = ({ customer, path, isFrom = false }: TCreateCustomerProps) => {
+const CreateCustomer = ({
+  customer,
+  path,
+  isFrom = false,
+}: TCreateCustomerProps) => {
   const [open, setOpen] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpSending, setOtpSending] = useState(false);
@@ -78,7 +82,9 @@ const CreateCustomer = ({ customer, path, isFrom = false }: TCreateCustomerProps
     }
     setOtpSent(true);
     setOtpSending(true);
-    sendOtp({ phoneNumber: phoneValue }).then((res) => console.log(res)).finally(() => setOtpSending(false));
+    sendOtp({ phoneNumber: phoneValue })
+      .then((res) => console.log(res))
+      .finally(() => setOtpSending(false));
   };
 
   const onSubmit = async (data: TCreateCustomerForm) => {
@@ -150,136 +156,128 @@ const CreateCustomer = ({ customer, path, isFrom = false }: TCreateCustomerProps
         )}
       </DialogTrigger>
 
-      <DialogContent className="px-6 py-4 w-[95vw] sm:w-[40vw] max-w-xl gap-2 bg-[#1A1129] border-white/10 max-h-screen overflow-y-auto hide-scrollbar">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+      <DialogContent className="px-2 py-2 lg:px-6 lg:py-4 w-[95vw] sm:w-[40vw] max-w-xl gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-white">
               {customer ? "Update Customer" : "Create Customer"}
             </DialogTitle>
-            <ButtonComponent
-              icon={Plus}
-              type="submit"
-              varient="yellow"
-              buttonName="Save"
-              className="h-10 px-6 rounded-2xl"
-              disable={isSubmitting}
-            />
           </DialogHeader>
 
           {/* Row 1 — Name & Phone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
+          <div className="grid grid-cols-2 gap-2 lg:gap-4">
+            <div>
               <Label className="text-white text-sm">Customer Name</Label>
               <Input
                 {...register("name")}
                 className="bg-transparent"
                 placeholder="e.g. Abul Kalam"
               />
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.name?.message}
-              </p>
+              <p className="text-red-500 text-xs">{errors.name?.message}</p>
             </div>
 
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Phone Number</Label>
               <Input
                 {...register("phoneNumber")}
                 className="bg-transparent"
                 placeholder="+8801*********"
               />
-              <p className="text-red-500 text-xs min-h-4">
+              <p className="text-red-500 text-xs">
                 {errors.phoneNumber?.message}
               </p>
             </div>
-          </div>
 
-          {/* Row 2 — Location & Interested Product */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Location</Label>
               <Input
                 {...register("location")}
                 className="bg-transparent"
                 placeholder="e.g. Dhaka"
               />
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.location?.message}
-              </p>
+              <p className="text-red-500 text-xs">{errors.location?.message}</p>
             </div>
 
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Interested Product</Label>
               <Input
                 {...register("interestedProduct")}
                 className="bg-transparent"
                 placeholder="e.g. Cotur Premium Plan"
               />
-              <p className="text-red-500 text-xs min-h-4">
+              <p className="text-red-500 text-xs">
                 {errors.interestedProduct?.message}
               </p>
             </div>
-          </div>
 
-          {/* Row 3 — OTP full width (create only) */}
-          {!customer && (
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label className="text-white text-sm">OTP Code</Label>
-                <button
-                  type="button"
-                  onClick={handleSendOtp}
-                  disabled={otpSending}
-                  className="flex items-center cursor-pointer gap-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed"
-                >
-                  {otpSending ? (
-                    <>
-                      <Loader2
-                        size={13}
-                        className="animate-spin text-[#A1A1A1]"
-                      />
-                      <span className="text-[#A1A1A1]">Sending...</span>
-                    </>
-                  ) : otpSent ? (
-                    <>
-                      <CheckCircle2 size={13} className="text-emerald-400" />
-                      <span className="text-emerald-400">
-                        OTP Sent — Resend
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <Send size={13} className="text-yellow-400" />
-                      <span className="text-yellow-400">Send OTP</span>
-                    </>
+            {!customer && (
+              <div>
+                <div className="flex items-center justify-between">
+                  <Label className="text-white text-sm">OTP Code</Label>
+                  <button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={otpSending}
+                    className="flex items-center cursor-pointer gap-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed"
+                  >
+                    {otpSending ? (
+                      <>
+                        <Loader2
+                          size={13}
+                          className="animate-spin text-[#A1A1A1]"
+                        />
+                        <span className="text-[#A1A1A1]">Sending...</span>
+                      </>
+                    ) : otpSent ? (
+                      <>
+                        <CheckCircle2 size={13} className="text-emerald-400" />
+                        <span className="text-emerald-400">
+                          OTP Sent — Resend
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={13} className="text-yellow-400" />
+                        <span className="text-yellow-400">Send OTP</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="relative">
+                  <Input
+                    {...register("code")}
+                    className="bg-transparent tracking-[0.35em] font-mono pr-10"
+                    placeholder="• • • • • •"
+                    maxLength={6}
+                  />
+                  {otpSent && !otpSending && (
+                    <CheckCircle2
+                      size={15}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 pointer-events-none"
+                    />
                   )}
-                </button>
+                  {otpSending && (
+                    <Loader2
+                      size={15}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1A1] animate-spin pointer-events-none"
+                    />
+                  )}
+                </div>
+                <p className="text-red-500 text-xs">{errors.code?.message}</p>
               </div>
-
-              <div className="relative">
-                <Input
-                  {...register("code")}
-                  className="bg-transparent tracking-[0.35em] font-mono pr-10"
-                  placeholder="• • • • • •"
-                  maxLength={6}
-                />
-                {otpSent && !otpSending && (
-                  <CheckCircle2
-                    size={15}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400 pointer-events-none"
-                  />
-                )}
-                {otpSending && (
-                  <Loader2
-                    size={15}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1A1] animate-spin pointer-events-none"
-                  />
-                )}
-              </div>
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.code?.message}
-              </p>
+            )}
+            <div className="flex items-end justify-end">
+              <ButtonComponent
+                icon={Plus}
+                type="submit"
+                varient="yellow"
+                buttonName="Save"
+                className="h-10 px-6 rounded-2xl"
+                disable={isSubmitting}
+              />
             </div>
-          )}
+          </div>
         </form>
       </DialogContent>
     </Dialog>

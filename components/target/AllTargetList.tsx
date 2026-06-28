@@ -47,7 +47,7 @@ const AllTargetList = ({ targets, meta, agents }: TAllTargetListProps) => {
   return (
     <div className="space-y-4">
       {/* page header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-row items-start sm:items-center justify-between">
         <PageHeader
           title="Targets"
           description="Manage and view all configured collection targets"

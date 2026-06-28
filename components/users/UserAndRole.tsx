@@ -46,7 +46,7 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
   return (
     <div className="space-y-4">
       {/* header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-row items-start sm:items-center justify-between">
         <PageHeader
           title="Users & Roles"
           description="Manage user accounts and role permissions"
@@ -69,7 +69,7 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-2 ">
             <Input
               value={search}
               onChange={(e) => {
@@ -78,7 +78,6 @@ const UserAndRole = ({ users, meta }: TUserManagementProps) => {
                 handleChange("search", value);
               }}
               placeholder="Search by name"
-              className="w-full sm:w-44"
             />
 
             <Select

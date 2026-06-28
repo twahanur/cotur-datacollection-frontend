@@ -45,7 +45,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
   return (
     <div className="space-y-4">
       {/* header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-start sm:items-center justify-between">
         <PageHeader
           title="All agent list"
           description="Manage all agent and their details"
@@ -55,7 +55,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
 
       <Card className=" w-full rounded-2xl effect p-2 gap-3">
         {/* card header */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-row items-start sm:items-center justify-between">
           <div className="flex items-center gap-4">
             <div
               className={`p-3 rounded-2xl relative bg-[rgba(255,107,0,0.13)] effect-no-bg shrink-0`}
@@ -73,7 +73,7 @@ const AllAgentList = ({ agents, meta }: TAgentProps) => {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:flex-wrap">
+          <div className="flex gap-2 flex-row items-center">
             <Input
               value={search}
               onChange={(e) => {

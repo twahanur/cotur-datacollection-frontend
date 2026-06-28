@@ -129,33 +129,21 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogTrigger asChild>
-        <TriggeredButton
-          name="Configure Target"
-          varient="green"
-          icon={Target}
-        />
+        <TriggeredButton name="Add Target" varient="green" />
       </DialogTrigger>
 
-      <DialogContent className="px-6 py-4 w-[25vw] max-w-150 gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+      <DialogContent className="px-2 py-2 lg:px-6 lg:py-4 w-[95vw] sm:w-[40vw] max-w-xl gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-white">
               Configure Target
             </DialogTitle>
-            <ButtonComponent
-              icon={Plus}
-              type="submit"
-              varient="yellow"
-              buttonName="Save"
-              className="h-10 px-6 rounded-2xl"
-              disable={isSubmitting}
-            />
           </DialogHeader>
 
           {/* Row 1 — Type & Period */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 lg:gap-4">
             {/* Target type */}
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Target Type</Label>
               <Select
                 value={typeValue}
@@ -176,13 +164,11 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.type?.message}
-              </p>
+              <p className="text-red-500 text-xs">{errors.type?.message}</p>
             </div>
 
             {/* Period */}
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Period</Label>
               <Select
                 value={periodValue}
@@ -191,7 +177,8 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
                     shouldValidate: true,
                   });
                   // clear specificDate when switching away
-                  if (v !== "SPECIFIC_DATE") setValue("specificDate", undefined);
+                  if (v !== "SPECIFIC_DATE")
+                    setValue("specificDate", undefined);
                 }}
               >
                 <SelectTrigger className="cursor-pointer">
@@ -200,23 +187,15 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
                 <SelectContent>
                   {TARGET_PERIODS.map((p) => (
                     <SelectItem key={p} value={p} className="cursor-pointer">
-                      {p === "SPECIFIC_DATE"
-                        ? "Specific Date"
-                        : formatLabel(p)}
+                      {p === "SPECIFIC_DATE" ? "Specific Date" : formatLabel(p)}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.period?.message}
-              </p>
+              <p className="text-red-500 text-xs">{errors.period?.message}</p>
             </div>
-          </div>
 
-          {/* Row 2 — Target count (always) + Agent select (INDIVIDUAL only) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Target count */}
-            <div className="space-y-1.5">
+            <div>
               <Label className="text-white text-sm">Target Count</Label>
               <Input
                 type="number"
@@ -225,14 +204,14 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
                 className="bg-transparent"
                 placeholder="e.g. 50"
               />
-              <p className="text-red-500 text-xs min-h-4">
+              <p className="text-red-500 text-xs">
                 {errors.targetCount?.message}
               </p>
             </div>
 
             {/* Agent select — only when INDIVIDUAL */}
             {typeValue === "INDIVIDUAL" && (
-              <div className="space-y-1.5">
+              <div>
                 <Label className="text-white text-sm">Select Agent</Label>
                 <Select
                   value={watch("agentId") ?? ""}
@@ -261,27 +240,36 @@ const ConfigureTarget = ({ agents }: TConfigureTargetProps) => {
                     )}
                   </SelectContent>
                 </Select>
-                <p className="text-red-500 text-xs min-h-4">
+                <p className="text-red-500 text-xs">
                   {errors.agentId?.message}
                 </p>
               </div>
             )}
-          </div>
 
-          {/* Specific date — only when SPECIFIC_DATE */}
-          {periodValue === "SPECIFIC_DATE" && (
-            <div className="space-y-1.5">
-              <Label className="text-white text-sm">Specific Date</Label>
-              <Input
-                type="datetime-local"
-                {...register("specificDate")}
-                className="bg-transparent"
-              />
-              <p className="text-red-500 text-xs min-h-4">
-                {errors.specificDate?.message}
-              </p>
-            </div>
-          )}
+            {periodValue === "SPECIFIC_DATE" && (
+              <div>
+                <Label className="text-white text-sm">Specific Date</Label>
+                <Input
+                  type="datetime-local"
+                  {...register("specificDate")}
+                  className="bg-transparent"
+                />
+                <p className="text-red-500 text-xs">
+                  {errors.specificDate?.message}
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="flex items-center justify-end mt-2">
+            <ButtonComponent
+              icon={Plus}
+              type="submit"
+              varient="yellow"
+              buttonName="Save"
+              className="h-10 px-6 rounded-2xl"
+              disable={isSubmitting}
+            />
+          </div>
         </form>
       </DialogContent>
     </Dialog>

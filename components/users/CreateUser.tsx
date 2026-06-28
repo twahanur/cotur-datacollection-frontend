@@ -150,31 +150,19 @@ const CreateUser = ({ user, isFrom = false, path }: TCreateUserProps) => {
             </button>
           )
         ) : (
-          <TriggeredButton
-            name="Create User"
-            varient="dark yellow"
-            icon={Plus}
-          />
+          <TriggeredButton name="Create User" varient="dark yellow" />
         )}
       </DialogTrigger>
 
-      <DialogContent className="px-6 py-4 w-[40vw] max-w-150 gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <DialogHeader className="flex flex-row items-center justify-between mt-4">
+      <DialogContent className="px-2 py-2 lg:px-6 lg:py-4 w-[95vw] sm:w-[40vw] max-w-xl gap-2 effect max-h-screen overflow-y-auto hide-scrollbar">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
             <DialogTitle className="text-xl font-semibold text-white">
               {user ? "Update User" : "Create A New User"}
             </DialogTitle>
-            <ButtonComponent
-              icon={Plus}
-              type="submit"
-              varient="yellow"
-              buttonName="Save"
-              className="h-10 px-6 rounded-2xl"
-              disable={isSubmitting}
-            />
           </DialogHeader>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 lg:gap-4">
             <div>
               <Label className="text-white text-sm">Name</Label>
               <Input
@@ -260,7 +248,7 @@ const CreateUser = ({ user, isFrom = false, path }: TCreateUserProps) => {
               </div>
             )}
 
-            <div className="space-y-2">
+            <div>
               <Label className="text-white text-sm">Status</Label>
               <Select
                 value={watch("status")}
@@ -282,7 +270,7 @@ const CreateUser = ({ user, isFrom = false, path }: TCreateUserProps) => {
               <p className="text-red-500 text-xs">{errors.status?.message}</p>
             </div>
 
-            <div className="space-y-2">
+            <div>
               <Label className="text-white text-sm">Role</Label>
               <Select
                 value={watch("role")}
@@ -305,6 +293,16 @@ const CreateUser = ({ user, isFrom = false, path }: TCreateUserProps) => {
               </Select>
               <p className="text-red-500 text-xs">{errors.role?.message}</p>
             </div>
+          </div>
+          <div className="flex items-center justify-end mt-2">
+            <ButtonComponent
+              icon={Plus}
+              type="submit"
+              varient="yellow"
+              buttonName="Save"
+              className="h-10 px-6 rounded-2xl"
+              disable={isSubmitting}
+            />
           </div>
         </form>
       </DialogContent>

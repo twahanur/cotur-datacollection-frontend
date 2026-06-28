@@ -40,10 +40,8 @@ const CustomPagination = ({
   setShow,
   handleChange,
   isLimit = true,
-  visible = 5,
+  visible = 3,
 }: TCustomPaginationProps) => {
-  const router = useRouter();
-  const pathName = usePathname();
 
   const handlePrev = () => {
     if (currentPage > 1) {

@@ -8,7 +8,7 @@ const LoginText = () => {
     "Engineered from your leads, orders, and customer data",
   ];
   return (
-    <div className="space-y-8 px-4">
+    <div className="space-y-8 px-4 hidden lg:block">
       <div className="flex items-center gap-2">
         <h1 className="text-2xl font-semibold">Optilux</h1>
       </div>

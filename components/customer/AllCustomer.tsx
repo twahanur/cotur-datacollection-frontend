@@ -80,11 +80,17 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
   return (
     <div className="space-y-4">
       {/* Page header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <PageHeader
-          title="Customers"
-          description="Manage and view all collected customer records"
-        />
+      <div className="flex flex-col gap-3 sm:flex-row items-start sm:items-center sm:justify-between">
+        <div className="flex items-start justify-between">
+          <PageHeader
+            title="Customers"
+            description="Manage and view all collected customer records"
+          />
+          <div className="lg:hidden">
+            <CreateCustomer />
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 flex-wrap">
           {canExport && (
             <>
@@ -114,7 +120,9 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
               </button>
             </>
           )}
-          <CreateCustomer />
+          <div className="hidden lg:flex">
+            <CreateCustomer />
+          </div>
         </div>
       </div>
 
