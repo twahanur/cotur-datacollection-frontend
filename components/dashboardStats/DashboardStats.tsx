@@ -46,16 +46,6 @@ const COLORS = [
 
 // ─── main component ──────────────────────────────────────────────────────────
 const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
-  const { overview, analytics } = stats;
-
-  const {
-    collectionsByAgent,
-    collectionsByInterestedProduct,
-    collectionsByLocation,
-    dailyCollectionTrend,
-    monthlyCollectionTrend,
-    topPerformingAgents,
-  } = analytics;
 
   // truncate long labels for axis
   const truncate = (str: string, n = 10) =>
@@ -64,55 +54,57 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
   return (
     <div className="space-y-6">
       {/* ── Overview stat cards ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-        <StatCard
-          icon={Users2}
-          label="Total Customers"
-          value={overview.totalCustomers}
-          iconBg="bg-[rgba(255,107,0,0.13)]"
-          iconColor="text-[#FF6B00]"
-        />
-        <StatCard
-          icon={CheckCircle2}
-          label="Verified Customers"
-          value={overview.totalVerifiedCustomers}
-          iconBg="bg-emerald-500/10"
-          iconColor="text-emerald-400"
-        />
-        <StatCard
-          icon={CalendarDays}
-          label="Today's Collection"
-          value={overview.todayCollection}
-          iconBg="bg-blue-500/10"
-          iconColor="text-blue-400"
-        />
-        <StatCard
-          icon={TrendingUp}
-          label="Monthly Collection"
-          value={overview.monthlyCollection}
-          iconBg="bg-purple-500/10"
-          iconColor="text-purple-400"
-        />
-        <StatCard
-          icon={Users}
-          label="Total Agents"
-          value={overview.totalAgents}
-          iconBg="bg-yellow-500/10"
-          iconColor="text-yellow-400"
-        />
-        <StatCard
-          icon={Users}
-          label="Active Agents"
-          value={overview.activeAgents}
-          iconBg="bg-pink-500/10"
-          iconColor="text-pink-400"
-        />
-      </div>
+      {stats?.overview && (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <StatCard
+            icon={Users2}
+            label="Total Customers"
+            value={stats?.overview?.totalCustomers}
+            iconBg="bg-[rgba(255,107,0,0.13)]"
+            iconColor="text-[#FF6B00]"
+          />
+          <StatCard
+            icon={CheckCircle2}
+            label="Verified Customers"
+            value={stats?.overview?.totalVerifiedCustomers}
+            iconBg="bg-emerald-500/10"
+            iconColor="text-emerald-400"
+          />
+          <StatCard
+            icon={CalendarDays}
+            label="Today's Collection"
+            value={stats?.overview?.todayCollection}
+            iconBg="bg-blue-500/10"
+            iconColor="text-blue-400"
+          />
+          <StatCard
+            icon={TrendingUp}
+            label="Monthly Collection"
+            value={stats?.overview?.monthlyCollection}
+            iconBg="bg-purple-500/10"
+            iconColor="text-purple-400"
+          />
+          <StatCard
+            icon={Users}
+            label="Total Agents"
+            value={stats?.overview?.totalAgents}
+            iconBg="bg-yellow-500/10"
+            iconColor="text-yellow-400"
+          />
+          <StatCard
+            icon={Users}
+            label="Active Agents"
+            value={stats?.overview?.activeAgents}
+            iconBg="bg-pink-500/10"
+            iconColor="text-pink-400"
+          />
+        </div>
+      )}
 
       {/* ── Daily trend ─────────────────────────────────────────────────── */}
-      <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+      <Card className="effect p-5 gap-0">
         <SectionHeader icon={TrendingUp} title="Daily Collection Trend" />
-        {dailyCollectionTrend.length === 0 ? (
+        {stats?.analytics?.dailyCollectionTrend.length === 0 ? (
           <p className="text-[#A1A1A1] text-sm text-center py-8">
             No daily data available
           </p>
@@ -122,7 +114,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
             className="h-56 sm:h-72 w-full"
           >
             <LineChart
-              data={dailyCollectionTrend}
+              data={stats?.analytics?.dailyCollectionTrend}
               margin={{ top: 8, right: 16, left: -16, bottom: 0 }}
             >
               <CartesianGrid
@@ -162,9 +154,9 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
       </Card>
 
       {/* ── Monthly trend ───────────────────────────────────────────────── */}
-      <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+      <Card className="effect p-5 gap-0">
         <SectionHeader icon={BarChart3} title="Monthly Collection Trend" />
-        {monthlyCollectionTrend.length === 0 ? (
+        {stats?.analytics?.monthlyCollectionTrend.length === 0 ? (
           <p className="text-[#A1A1A1] text-sm text-center py-8">
             No monthly data available
           </p>
@@ -174,7 +166,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
             className="h-56 sm:h-72 w-full"
           >
             <BarChart
-              data={monthlyCollectionTrend}
+              data={stats?.analytics?.monthlyCollectionTrend}
               margin={{ top: 8, right: 16, left: -16, bottom: 0 }}
             >
               <CartesianGrid
@@ -204,9 +196,9 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
       {/* ── Agent + Product row ─────────────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Collections by agent */}
-        <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+        <Card className="effect p-5 gap-0">
           <SectionHeader icon={Users} title="Collections by Agent" />
-          {collectionsByAgent.length === 0 ? (
+          {stats?.analytics?.collectionsByAgent?.length === 0 ? (
             <p className="text-[#A1A1A1] text-sm text-center py-8">
               No agent data available
             </p>
@@ -216,7 +208,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
               className="h-56 sm:h-64 w-full"
             >
               <BarChart
-                data={collectionsByAgent}
+                data={stats?.analytics?.collectionsByAgent}
                 margin={{ top: 8, right: 8, left: -16, bottom: 0 }}
               >
                 <CartesianGrid
@@ -246,7 +238,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
                   cursor={{ fill: "rgba(255,255,255,0.04)" }}
                 />
                 <Bar dataKey="count" radius={[6, 6, 0, 0]}>
-                  {collectionsByAgent.map((_, i) => (
+                  {stats?.analytics?.collectionsByAgent.map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Bar>
@@ -256,9 +248,9 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
         </Card>
 
         {/* Collections by product */}
-        <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+        <Card className="effect p-5 gap-0">
           <SectionHeader icon={Package} title="Collections by Product" />
-          {collectionsByInterestedProduct.length === 0 ? (
+          {stats?.analytics?.collectionsByInterestedProduct?.length === 0 ? (
             <p className="text-[#A1A1A1] text-sm text-center py-8">
               No product data available
             </p>
@@ -269,7 +261,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
             >
               <BarChart
                 layout="vertical"
-                data={collectionsByInterestedProduct}
+                data={stats?.analytics?.collectionsByInterestedProduct}
                 margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
               >
                 <CartesianGrid
@@ -303,7 +295,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
                   cursor={{ fill: "rgba(255,255,255,0.04)" }}
                 />
                 <Bar dataKey="count" radius={[0, 6, 6, 0]}>
-                  {collectionsByInterestedProduct.map((_, i) => (
+                  {stats?.analytics?.collectionsByInterestedProduct?.map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Bar>
@@ -316,9 +308,9 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
       {/* ── Location + Top agents row ───────────────────────────────────── */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Collections by location */}
-        <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+        <Card className="effect p-5 gap-0">
           <SectionHeader icon={MapPin} title="Collections by Location" />
-          {collectionsByLocation.length === 0 ? (
+          {stats?.analytics?.collectionsByLocation?.length === 0 ? (
             <p className="text-[#A1A1A1] text-sm text-center py-8">
               No location data available
             </p>
@@ -329,7 +321,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
             >
               <BarChart
                 layout="vertical"
-                data={collectionsByLocation}
+                data={stats?.analytics?.collectionsByLocation}
                 margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
               >
                 <CartesianGrid
@@ -363,7 +355,7 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
                   cursor={{ fill: "rgba(255,255,255,0.04)" }}
                 />
                 <Bar dataKey="count" radius={[0, 6, 6, 0]}>
-                  {collectionsByLocation.map((_, i) => (
+                  {stats?.analytics?.collectionsByLocation?.map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
                   ))}
                 </Bar>
@@ -373,17 +365,17 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
         </Card>
 
         {/* Top performing agents leaderboard */}
-        <Card className="bg-[#1A1129] border border-white/10 rounded-2xl p-5 gap-0">
+        <Card className="effect p-5 gap-0">
           <SectionHeader icon={Award} title="Top Performing Agents" />
-          {topPerformingAgents.length === 0 ? (
+          {stats?.analytics?.topPerformingAgents?.length === 0 ? (
             <p className="text-[#A1A1A1] text-sm text-center py-8">
               No agent data available
             </p>
           ) : (
             <div className="space-y-2 mt-1">
-              {topPerformingAgents.map((agent, i) => {
-                const max = topPerformingAgents[0].count || 1;
-                const pct = Math.round((agent.count / max) * 100);
+              {stats?.analytics?.topPerformingAgents?.map((agent, i) => {
+                const max = stats?.analytics?.topPerformingAgents[0]?.count || 1;
+                const pct = Math.round((agent?.count / max) * 100);
                 const medals = ["🥇", "🥈", "🥉"];
                 return (
                   <div key={agent.agentId} className="space-y-1">
@@ -397,11 +389,11 @@ const DashboardStats = ({ stats }: { stats: TDashboardStats }) => {
                           )}
                         </span>
                         <span className="text-white text-sm truncate">
-                          {agent.agentName}
+                          {agent?.agentName}
                         </span>
                       </div>
                       <span className="text-[#A1A1A1] text-xs shrink-0 font-mono">
-                        {agent.count}
+                        {agent?.count}
                       </span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-white/5">
