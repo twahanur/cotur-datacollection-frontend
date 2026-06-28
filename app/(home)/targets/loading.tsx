@@ -1,11 +1,7 @@
-
+import AllUserLoadingPage from "../users/loading";
 
 const AllTargetListLoadingPage = () => {
-    return (
-        <div className="min-h-screen space-y-4">
-            this is all target list loading page
-        </div>
-    );
+  return <AllUserLoadingPage />;
 };
 
 export default AllTargetListLoadingPage;

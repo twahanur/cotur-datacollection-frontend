@@ -1,3 +1,4 @@
+import AgentDashboardStats from "@/components/dashboardStats/AgentDashboardStats";
 import DashboardStats from "@/components/dashboardStats/DashboardStats";
 import { getCurrentUser } from "@/service/authService";
 import {
@@ -16,10 +17,13 @@ const Home = async () => {
     result = agentStatsResult?.data;
   }
 
-
   return (
     <section className="min-h-screen">
-      <DashboardStats stats={result}/>
+      {currentUser?.role === "SUPER_ADMIN" || currentUser?.role === "ADMIN" ? (
+        <DashboardStats stats={result} />
+      ) : (
+        <AgentDashboardStats dashboardStat={result} />
+      )}
     </section>
   );
 };

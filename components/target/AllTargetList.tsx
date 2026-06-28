@@ -21,6 +21,7 @@ import { formatLabel } from "@/utills/formatLabel";
 import { Target } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { allTargetColumns } from "./AllTargetColumn";
+import { useUser } from "@/provider/AuthProvider";
 
 type TAllTargetListProps = {
   targets: TTarget[];
@@ -30,6 +31,7 @@ type TAllTargetListProps = {
 
 const AllTargetList = ({ targets, meta, agents }: TAllTargetListProps) => {
   const searchParams = useSearchParams();
+  const { user } = useUser();
 
   const {
     handleChange,
@@ -50,7 +52,9 @@ const AllTargetList = ({ targets, meta, agents }: TAllTargetListProps) => {
           title="Targets"
           description="Manage and view all configured collection targets"
         />
-        <ConfigureTarget agents={agents} />
+        {(user?.role == "SUPER_ADMIN" || user?.role == "ADMIN") && (
+          <ConfigureTarget agents={agents} />
+        )}
       </div>
 
       <Card className="w-full rounded-2xl effect p-2 gap-3">

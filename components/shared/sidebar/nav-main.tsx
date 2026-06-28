@@ -2,13 +2,12 @@
 import { SidebarGroup } from "@/components/ui/sidebar";
 import CoreManagement from "./sidebarRoutes/CoreManagement";
 import { useUser } from "@/provider/AuthProvider";
-import { filterRoutesByPermissions } from "@/utills/filterRoutesByPermissions";
 import { navigationROute, NavRoute } from "@/constants/navigationRoute";
+import { filterRoutesByRole } from "@/utills/filterRoutesByPermissions";
 
 export function NavMain() {
   const { user } = useUser();
   const role = user?.role as string;
-  const permissions = (user?.permissions as string[]) || [];
   const groupedRoutes = navigationROute.reduce(
     (acc, route) => {
       const key = route?.group || "Others";
@@ -23,9 +22,8 @@ export function NavMain() {
     <SidebarGroup>
       <div className="space-y-3">
         {Object.entries(groupedRoutes).map(([groupName, routes], i) => {
-          const visibleRoutes = filterRoutesByPermissions({
+          const visibleRoutes = filterRoutesByRole({
             routes,
-            permissions,
             role,
           });
 

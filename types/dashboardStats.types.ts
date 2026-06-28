@@ -1,3 +1,6 @@
+import { TVerificationStatus } from "./customer.types";
+import { TAgentStatTarget } from "./target.types";
+
 export type TCollectionByAgent = {
   agentId: string;
   agentName: string;
@@ -47,4 +50,21 @@ export type TOverview = {
 export type TDashboardStats = {
   analytics: TAnalytics;
   overview: TOverview;
+};
+
+export type TRecentData = {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  location: string;
+  interestedProduct: string;
+  verificationStatus: TVerificationStatus;
+  collectionDate: string;
+};
+
+export type TAgentDashboard = {
+  monthlyCollection: number;
+  recentCollections: TRecentData[];
+  targets: TAgentStatTarget[];
+  todayCollection: number;
 };

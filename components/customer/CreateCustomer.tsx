@@ -78,7 +78,7 @@ const CreateCustomer = ({ customer, path, isFrom = false }: TCreateCustomerProps
     }
     setOtpSent(true);
     setOtpSending(true);
-    sendOtp({ phoneNumber: phoneValue }).finally(() => setOtpSending(false));
+    sendOtp({ phoneNumber: phoneValue }).then((res) => console.log(res)).finally(() => setOtpSending(false));
   };
 
   const onSubmit = async (data: TCreateCustomerForm) => {
