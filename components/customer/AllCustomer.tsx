@@ -16,10 +16,11 @@ import {
 import useFilters from "@/hooks/useFilters";
 import { useUser } from "@/provider/AuthProvider";
 import { exportCustomers } from "@/service/custoemer";
+import { TAgent } from "@/types/agent.types";
 import { TCustomer } from "@/types/customer.types";
 import { TPagination } from "@/types/shared.types";
 import { formatLabel } from "@/utills/formatLabel";
-import { FileSpreadsheet, FileText, Loader2 } from "lucide-react";
+import { FileSpreadsheet, FileText, Loader2, Users2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -29,9 +30,10 @@ import CreateCustomer from "./CreateCustomer";
 type TAllCustomerProps = {
   customers: TCustomer[];
   meta: TPagination;
+  agents: TAgent[];
 };
 
-const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
+const AllCustomer = ({ customers, meta, agents }: TAllCustomerProps) => {
   const [search, setSearch] = useState("");
   const [exporting, setExporting] = useState<"csv" | "excel" | null>(null);
   const searchParams = useSearchParams();
@@ -126,31 +128,75 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
         </div>
       </div>
 
-      <Card className="w-full rounded-2xl effect p-2 gap-3">
-        {/* Filters row */}
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between w-full">
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center ">
-            {/* Search */}
+      <Card className="w-full effect p-2 gap-3">
+        <div className="flex items-start justify-between">
+          {/* Card header */}
+          <div className="flex items-center gap-4">
+            <div className="p-3 rounded-2xl bg-[rgba(255,107,0,0.13)] effect-no-bg shrink-0">
+              <Users2 className="text-[#FF6B00]" />
+            </div>
+            <div>
+              <h1 className="text-[#FDFDFD] text-lg">All Customers</h1>
+              <p className="text-[#B1B1B1] text-sm">
+                {meta?.total ?? 0} total customers
+              </p>
+            </div>
+          </div>
+          <ButtonComponent
+            buttonName="Reset"
+            handleSubmit={() =>
+              handleReset({ setLimit: setShow, setCurrPage: setCurrentPage })
+            }
+            varient="default"
+            className="w-full lg:w-auto shrink-0"
+          />
+        </div>
+
+        {/* Filters */}
+          <div className="flex lg:flex-row items-end gap-3 flex-wrap w-full">
+            {/* Name */}
             <Input
-              value={search}
-              onChange={(e) => {
-                const value = e.target.value;
-                setSearch(value);
-                handleChange("search", value);
-              }}
-              placeholder="Search by name"
-              className="w-full sm:w-48"
+              defaultValue={searchParams.get("name") || ""}
+              onChange={(e) => handleChange("name", e.target.value)}
+              placeholder="search by name"
+               className="w-36"
             />
 
-            {/* Verification status filter */}
+            {/* Phone */}
+            <Input
+              defaultValue={searchParams.get("phoneNumber") || ""}
+              onChange={(e) => handleChange("phoneNumber", e.target.value)}
+              placeholder="search by phone"
+             className="w-36"
+            />
+
+            {/* Location */}
+            <Input
+              defaultValue={searchParams.get("location") || ""}
+              onChange={(e) => handleChange("location", e.target.value)}
+              placeholder="search by location"
+             className="w-36"
+            />
+
+            {/* Interested product */}
+            <Input
+              defaultValue={searchParams.get("interestedProduct") || ""}
+              onChange={(e) =>
+                handleChange("interestedProduct", e.target.value)
+              }
+              placeholder="search by product"
+            className="w-36"
+            />
+
+            {/* Verification status */}
             <Select
               value={searchParams.get("verificationStatus") || "all"}
               onValueChange={(value) =>
                 handleChange("verificationStatus", value)
               }
             >
-              <SelectTrigger className="cursor-pointer w-full sm:w-44">
-                <SelectValue placeholder="Filter by Status" />
+              <SelectTrigger className="cursor-pointer w-36">
+                <SelectValue placeholder="Verification" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
@@ -161,25 +207,52 @@ const AllCustomer = ({ customers, meta }: TAllCustomerProps) => {
                 ))}
               </SelectContent>
             </Select>
-            {canExport && (
-              <Input
-                defaultValue={searchParams.get("collectedBy") || ""}
-                onChange={(e) => handleChange("collectedBy", e.target.value)}
-                placeholder="Filter by agent"
-                className="w-full sm:w-44"
-              />
-            )}
-          </div>
 
-          <ButtonComponent
-            buttonName="Reset"
-            handleSubmit={() =>
-              handleReset({ setLimit: setShow, setCurrPage: setCurrentPage })
-            }
-            varient="default"
-            className="w-full sm:w-auto"
-          />
-        </div>
+            {/* Collected by agent dropdown */}
+            <Select
+              value={searchParams.get("collectedById") || "all"}
+              onValueChange={(value) => handleChange("collectedById", value)}
+            >
+              <SelectTrigger className="cursor-pointer w-36">
+                <SelectValue placeholder="Collected by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Agents</SelectItem>
+                {agents.map((agent) => (
+                  <SelectItem
+                    key={agent.id}
+                    value={agent.id}
+                    className="cursor-pointer"
+                  >
+                    {agent.fullName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Start date */}
+            <div className="flex flex-col gap-1 w-full lg:w-44">
+              <label className="text-[#A1A1A1] text-xs px-1">Start Date</label>
+              <Input
+                type="date"
+                defaultValue={searchParams.get("startDate") || ""}
+                onChange={(e) => handleChange("startDate", e.target.value)}
+                className="w-full"
+              />
+            </div>
+
+            {/* End date */}
+            <div className="flex flex-col gap-1 w-full lg:w-44">
+              <label className="text-[#A1A1A1] text-xs px-1">End Date</label>
+              <Input
+                type="date"
+                defaultValue={searchParams.get("endDate") || ""}
+                onChange={(e) => handleChange("endDate", e.target.value)}
+                className="w-full"
+              />
+            </div>
+          </div>
+       
 
         {/* Table */}
         <TableComponent

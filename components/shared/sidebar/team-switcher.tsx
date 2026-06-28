@@ -7,12 +7,11 @@ import {
 import Link from "next/link";
 import TooltipComponent from "@/components/ui/TooltipComponent";
 import Image from "next/image";
-import logo from "../../../public/chotur.png";
+import logo from "../../../public/chotur.jpg";
 
 type TeamSwitcherProps = {
   name: string;
   plan: string;
-  logoUrl?: string | null;
 };
 
 export function TeamSwitcher({ name, plan }: TeamSwitcherProps) {
